@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy New Year My Love</title>
+    
+    <!-- Fonts: Great Vibes for script, Playfair Display for headers, Inter for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff2a68; /* Romantic Pink/Red */
+            --gold: #FFD700;
+            --bg-deep: #1a0510; /* Deep reddish black */
+            --glass-bg: rgba(40, 10, 20, 0.45);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(circle at center, #2a0a15 0%, #000000 100%);
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* Canvas for Fireworks */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Floating particles background (CSS only) */
+        .bg-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background-image: 
+                radial-gradient(#ff2a68 1px, transparent 1px),
+                radial-gradient(#ffffff 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.1;
+            animation: floatBackground 60s linear infinite;
+        }
+
+        /* Main Glass Card Container */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 550px;
+            min-height: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 100, 150, 0.2);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 42, 104, 0.1);
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 15px rgba(255, 42, 104, 0.3);
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #ffe0e9;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: rgba(255, 235, 240, 0.9);
+            font-weight: 300;
+            margin-bottom: 25px;
+            max-width: 450px;
+        }
+
+        /* Slide Transitions */
+        .slide {
+            position: absolute;
+            width: 100%;
+            padding: 0 20px;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        /* Decorative Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0 25px 0;
+            opacity: 0.8;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            height: 1px;
+            width: 40px;
+            background: linear-gradient(90deg, transparent, #ff2a68, transparent);
+        }
+        .heart-icon {
+            color: #ff2a68;
+            font-size: 1.2rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .action-hint {
+            margin-top: auto;
+            padding-top: 30px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(255, 200, 210, 0.6);
+            cursor: pointer;
+        }
+
+        /* Heartbeat Animation */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.3); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.3); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes floatBackground {
+            from { background-position: 0 0, 25px 25px; }
+            to { background-position: 100px 100px, 125px 125px; }
+        }
+
+        #click-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 1.8rem; }
+            .card-container { width: 85%; padding: 30px 20px; min-height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-particles"></div>
+    <canvas id="canvas"></canvas>
+    <div id="click-layer"></div>
+
+    <div class="card-container">
+        
+        <!-- Slide 1 -->
+        <div class="slide active">
+            <h1>Happy New Year</h1>
+            <div class="divider"><span class="heart-icon">❤</span></div>
+            <p>Another year has passed, but my love for you has only grown timeless.</p>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h1>My Dearest</h1>
+            <h2>Madam Jii</h2>
+            <div class="divider"><span class="heart-icon">❤</span></div>
+            <p>You are the poetry my heart writes every single day. Thank you for making my life beautiful.</p>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2>My Wish For You</h2>
+            <div class="divider"><span class="heart-icon">❤</span></div>
+            <p>May 2026 bring you as much happiness as you bring into my life. (And that is infinite happiness.)</p>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <h1>Forever Us</h1>
+            <div class="divider"><span class="heart-icon">❤</span></div>
+            <p>Here’s to more laughter, more memories, and more love.<br><br><strong>I love you.</strong></p>
+        </div>
+
+        <div class="action-hint">Tap to Open Heart</div>
+    </div>
+
+<script>
+    /* -------------------------------------------------------------------------- */
+    /* SLIDER LOGIC                                */
+    /* -------------------------------------------------------------------------- */
+    const slides = document.querySelectorAll('.slide');
+    const hint = document.querySelector('.action-hint');
+    const clickLayer = document.getElementById('click-layer');
+    let currentSlide = 0;
+
+    clickLayer.addEventListener('click', (e) => {
+        // Advance Slide
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+
+        // Update Hint Text
+        if (currentSlide === slides.length - 1) {
+            hint.textContent = "Tap to Restart";
+        } else {
+            hint.textContent = "Tap for Love";
+        }
+
+        // Trigger Explosion
+        createHeartExplosion(e.clientX, e.clientY);
+    });
+
+
+    /* -------------------------------------------------------------------------- */
+    /* ROMANTIC FIREWORKS ENGINE                         */
+    /* -------------------------------------------------------------------------- */
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Physics Constants
+    const GRAVITY = 0.035;
+    const FRICTION = 0.99;
+    
+    // Romantic Palettes
+    const PALETTES = [
+        ['#FF004D', '#FF5733', '#FFC300'], // Passion
+        ['#FF69B4', '#FF1493', '#FFFFFF'], // Pink Love
+        ['#C71585', '#DB7093', '#FFB6C1'], // Deep Rose
+        ['#FFD700', '#FFFFFF', '#E6E6FA']  // Gold & Starlight
+    ];
+
+    class Particle {
+        constructor(x, y, color, velocity, isSparkle) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.velocity = velocity;
+            this.alpha = 1;
+            this.life = Math.random() * 0.5 + 0.8; // varied life
+            this.decay = Math.random() * 0.008 + 0.006;
+            this.isSparkle = isSparkle;
+        }
+
+        update() {
+            this.velocity.x *= FRICTION;
+            this.velocity.y *= FRICTION;
+            this.velocity.y += GRAVITY;
+            this.x += this.velocity.x;
+            this.y += this.velocity.y;
+            this.alpha -= this.decay;
+        }
+
+        draw(ctx) {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            
+            if (this.isSparkle && Math.random() > 0.8) {
+                // Glitter effect
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Glow
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.color;
+            ctx.restore();
+        }
+    }
+
+    class Firework {
+        constructor(x, targetY, isHeart) {
+            this.x = x;
+            this.y = height;
+            this.targetY = targetY;
+            this.isHeart = isHeart;
+            this.palette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+            this.speed = Math.random() * 3 + 12;
+            this.angle = -Math.PI / 2 + (Math.random() * 0.2 - 0.1);
+            this.velocity = { x: Math.cos(this.angle) * this.speed, y: Math.sin(this.angle) * this.speed };
+            this.particles = [];
+            this.exploded = false;
+            this.dead = false;
+        }
+
+        update() {
+            if (!this.exploded) {
+                this.velocity.y += GRAVITY;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+
+                if (this.velocity.y >= -1 || this.y <= this.targetY) {
+                    this.explode();
+                }
+            } else {
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    this.particles[i].update();
+                    if (this.particles[i].alpha <= 0) this.particles.splice(i, 1);
+                }
+                if (this.particles.length === 0) this.dead = true;
+            }
+        }
+
+        explode() {
+            this.exploded = true;
+            const count = this.isHeart ? 140 : 100; // More particles for heart to define shape
+            
+            for (let i = 0; i < count; i++) {
+                const color = this.palette[Math.floor(Math.random() * this.palette.length)];
+                let vx, vy;
+
+                if (this.isHeart) {
+                    // Heart parametric equation
+                    // x = 16sin^3(t)
+                    // y = 13cos(t) - 5cos(2t) - 2cos(3t) - cos(4t)
+                    const angle = (i / count) * Math.PI * 2;
+                    const r = Math.random() * 0.5 + 2; // Radius/Power multiplier
+                    
+                    // We flip Y because canvas Y is positive downwards
+                    vx = (16 * Math.pow(Math.sin(angle), 3));
+                    vy = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+                    
+                    // Normalize and scale
+                    vx = (vx / 16) * r;
+                    vy = (vy / 16) * r;
+
+                } else {
+                    // Standard Burst
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 6;
+                    vx = Math.cos(angle) * speed;
+                    vy = Math.sin(angle) * speed;
+                }
+
+                this.particles.push(new Particle(this.x, this.y, color, {x: vx, y: vy}, Math.random() < 0.3));
+            }
+        }
+
+        draw(ctx) {
+            if (!this.exploded) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffb7b2';
+                ctx.fill();
+            } else {
+                ctx.globalCompositeOperation = 'lighter';
+                this.particles.forEach(p => p.draw(ctx));
+                ctx.globalCompositeOperation = 'source-over';
+            }
+        }
+    }
+
+    let fireworks = [];
+
+    // Helper: Launch from bottom
+    function autoLaunch() {
+        if (Math.random() < 0.04) {
+            const x = Math.random() * width;
+            const targetY = height * 0.15 + Math.random() * (height * 0.3);
+            // 40% chance of being a heart shape
+            fireworks.push(new Firework(x, targetY, Math.random() < 0.4));
+        }
+    }
+
+    // Helper: Immediate explosion on click
+    function createHeartExplosion(x, y) {
+        const fw = new Firework(x, y, true); // Always heart on click
+        fw.exploded = true;
+        fw.explode(); // Trigger particle generation immediately
+        fireworks.push(fw);
+    }
+
+    // Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Trail effect
+        ctx.fillStyle = 'rgba(20, 5, 10, 0.2)'; // Dark reddish trail
+        ctx.fillRect(0, 0, width, height);
+
+        autoLaunch();
+
+        for (let i = fireworks.length - 1; i >= 0; i--) {
+            fireworks[i].update();
+            fireworks[i].draw(ctx);
+            if (fireworks[i].dead) fireworks.splice(i, 1);
+        }
+    }
+
+    animate();
+
+</script>
+
+</body>
+</html>
+
+
